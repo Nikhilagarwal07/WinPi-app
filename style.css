@@ -1,26 +1,28 @@
-/* style.css */
+/* style.css - Gaming App Theme */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     text-align: center;
-    background: #f7f7f7;
-    color: #333;
+    background: #0f0f1a;
+    /* dark, immersive background */
+    color: #ffffff;
+    /* bright text */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-
 }
 
 header {
-    background: #3b3b98;
-    color: white;
+    background: linear-gradient(90deg, #ff0080, #7928ca);
+    /* vibrant neon gradient */
+    color: #fff;
     padding: 30px 20px;
 }
 
 header h1 {
     margin: 0;
-    font-size: 2 em;
+    font-size: 2em;
 }
 
 header p {
@@ -34,48 +36,56 @@ main {
     max-width: 800px;
     margin: auto;
     text-align: left;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: #1a1a2e;
+    /* dark card for contrast */
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(255, 0, 128, 0.3);
+    /* neon glow */
 }
 
 main h1 {
     font-size: 1.3em;
-    color: #3b3b98;
+    color: #ff0080;
+    /* neon accent */
     margin-top: 20px;
 }
 
 main h2 {
-    font-size: 1.0em;
-    color: #3b3b98;
+    font-size: 1em;
+    color: #ff77ff;
+    /* softer neon */
     margin-top: 20px;
 }
 
 main p {
     text-align: justify;
-    line-height: 1.3em;
+    line-height: 1.5em;
     margin: 15px 0;
     font-size: 1em;
+    color: #f0f0f0;
 }
 
 a.button {
     display: inline-block;
     margin: 15px 10px;
     padding: 12px 20px;
-    background: #3b3b98;
+    background: #ff0080;
     color: white;
     text-decoration: none;
-    border-radius: 6px;
-    transition: background 0.3s;
+    border-radius: 8px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(255, 0, 128, 0.5);
 }
 
 a.button:hover {
-    background: #2a2a75;
+    background: #ff66b3;
+    transform: scale(1.05);
 }
 
 footer {
     margin-top: 40px;
     padding: 15px;
     font-size: 0.9em;
-    background: #eee;
+    background: #1a1a2e;
+    color: #ccc;
 }
