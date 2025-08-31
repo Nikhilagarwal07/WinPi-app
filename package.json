@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "install-all": "npm install --prefix backend && npm install --prefix frontend",
-    "start": "concurrently \"npm start --prefix backend\" \"npm start --prefix frontend\""
+    "start": "concurrently --kill-others \"npm start --prefix backend\" \"npm start --prefix frontend\""
   },
   "devDependencies": {
     "concurrently": "8.2.2"
   },
   "dependencies": {
+    "mongodb": "^6.19.0",
+    "mongoose": "^8.18.0",
     "react-router-dom": "^7.8.2"
   }
 }

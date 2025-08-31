@@ -1,5 +1,3 @@
-// utils/pi.js
-
 // 🔹 Initialize Pi SDK
 export const initPi = () => {
   if (!window.Pi) {
@@ -18,16 +16,17 @@ export const loginWithPi = async () => {
 
   const scopes = ["username", "payments"]; // same as Pi Demo
   try {
+    // We need the entire authResult, including the accessToken, for server-side verification
     const authResult = await window.Pi.authenticate(
       scopes,
       (payment) => {
         console.log("⚡ Payment callback:", payment);
       }
     );
-    console.log("✅ Auth result:", authResult);
-    return authResult.user;
+    console.log("✅ Frontend auth successful:", authResult);
+    return authResult; // Return the full object now
   } catch (err) {
-    console.error("❌ Login failed:", err);
+    console.error("❌ Frontend login failed:", err);
     throw err;
   }
 };
