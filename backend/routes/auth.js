@@ -3,64 +3,59 @@
 import express from "express";
 import fetch from "node-fetch";
 import { signToken } from "../utils/jwt.js";
-import User from '../models/User.js'; // Import the User model
+import User from '../models/User.js';
 
 const router = express.Router();
 const PI_API_URL = "https://api.minepi.com/v2/me";
 
+const isYesterday = (date) => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    return date.toDateString() === yesterday.toDateString();
+};
+
 router.post("/verify", async (req, res) => {
   const { accessToken } = req.body;
-
-  if (!accessToken) {
-    return res.status(400).json({ success: false, message: "Access token is required." });
-  }
+  if (!accessToken) return res.status(400).json({ success: false, message: "Access token is required." });
 
   try {
-    const piServerResponse = await fetch(PI_API_URL, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    
-    if (!piServerResponse.ok) {
-        console.error("Pi API Error:", piServerResponse.statusText);
-        return res.status(401).json({ success: false, message: "Invalid or expired access token." });
-    }
-
+    const piServerResponse = await fetch(PI_API_URL, { headers: { Authorization: `Bearer ${accessToken}` } });
+    if (!piServerResponse.ok) throw new Error("Invalid or expired access token.");
     const piUser = await piServerResponse.json();
-    console.log(`✅ Pi API verification successful for user: ${piUser.username}`);
 
-    // --- DATABASE INTERACTION ---
-    // Find a user with the given Pi UID. If they don't exist, create them.
     let user = await User.findOne({ piUid: piUser.uid });
 
     if (!user) {
-      console.log(`User ${piUser.username} not found in DB. Creating new user...`);
       user = await User.create({
         piUid: piUser.uid,
         username: piUser.username,
+        // The other fields (xp, gems, etc.) will use the defaults from the model
       });
+      console.log(`✅ New user ${user.username} created with default stats.`);
     } else {
-      console.log(`User ${piUser.username} found in DB. Updating last login.`);
-      user.lastLogin = Date.now();
-      await user.save();
-    }
-    // --- END DATABASE INTERACTION ---
-
-    const token = signToken({ uid: user.piUid, username: user.username });
-    
-    res.json({ 
-        success: true, 
-        token, 
-        user: {
-            username: user.username,
-            uid: user.piUid
+      const today = new Date();
+      if (user.lastLogin.toDateString() !== today.toDateString()) {
+        if (isYesterday(user.lastLogin)) {
+          user.loginStreak += 1;
+          user.gems += 20 * user.loginStreak;
+        } else {
+          user.loginStreak = 1;
         }
-    });
+        user.gems += 50;
+        user.lastLogin = Date.now();
+        await user.save();
+        console.log(`✅ Daily login rewards processed for ${user.username}.`);
+      } else {
+        console.log(`User ${user.username} already logged in today.`);
+      }
+    }
+
+    const token = signToken({ piUid: user.piUid, username: user.username });
+    res.json({ success: true, token, user: { username: user.username, piUid: user.piUid } });
 
   } catch (error) {
     console.error("Server-side verification error:", error);
-    return res.status(500).json({ success: false, message: "Internal server error during verification." });
+    return res.status(500).json({ success: false, message: "Internal server error." });
   }
 });
 

@@ -1,22 +1,27 @@
+// File: frontend/tailwind.config.js
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}","./public/index.html" // ensures Tailwind scans your React files
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./public/index.html"
   ],
   theme: {
     extend: {
       colors: {
-        primary: "#4f46e5",   // Indigo
-        secondary: "#0ea5e9", // Sky blue
-        accent: "#22c55e",    // Green
+        // Digital Frontier Theme Palette
+        'brand-dark': '#0D0C1D',      // Very Dark Blue/Purple
+        'brand-card': '#161A30',      // Slightly lighter card background
+        'brand-primary': '#B931FC',   // Vibrant Magenta/Purple
+        'brand-secondary': '#22D3EE', // Bright Cyan
+        'brand-accent': '#FBBF24',    // Bright Yellow/Gold for highlights
+        'brand-text': '#F1F5F9',      // Main text color (off-white)
+        'brand-subtext': '#94A3B8',   // Subtler text color (slate)
       },
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
-        display: ["Poppins", "sans-serif"],
+        sans: ["Poppins", "sans-serif"],
       },
     },
   },
   plugins: [],
 };
-

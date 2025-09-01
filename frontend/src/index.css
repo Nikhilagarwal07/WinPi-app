@@ -1,7 +1,55 @@
+/* File: frontend/src/index.css */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  font-family: 'Poppins', sans-serif;
+  @apply bg-brand-dark text-brand-text font-sans;
 }
+
+/* --- Subtle Animated Shapes Background --- */
+
+.shapes-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: radial-gradient(ellipse at center, #1e293b 0%, #0d0c1d 100%);
+  overflow: hidden;
+}
+
+.shape {
+  position: absolute;
+  opacity: 0;
+  animation: float 40s linear infinite;
+  filter: drop-shadow(0 0 8px currentColor); /* Reduced glow */
+}
+
+@keyframes float {
+  0% { transform: translateY(50vh) rotate(0deg); opacity: 0; }
+  10%, 90% { opacity: 0.2; } /* Reduced opacity */
+  100% { transform: translateY(-50vh) rotate(360deg); opacity: 0; }
+}
+
+/* Shape types */
+.cross { width: 40px; height: 40px; }
+.cross::before, .cross::after { content: ''; position: absolute; background-color: currentColor; }
+.cross::before { width: 100%; height: 2px; top: 50%; transform: translateY(-50%); }
+.cross::after { width: 2px; height: 100%; left: 50%; transform: translateX(-50%); }
+
+.triangle { width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-bottom: 30px solid currentColor; }
+.square { border: 1px solid currentColor; }
+.circle { border: 1px solid currentColor; border-radius: 50%; }
+
+/* Positioning and timing */
+.s1 { top: 15%; left: 10%; width: 40px; height: 40px; color: #22D3EE; animation-duration: 37s; animation-delay: -5s; }
+.s2 { top: 75%; left: 15%; width: 60px; height: 60px; color: #B931FC; animation-duration: 42s; animation-delay: -12s; }
+.s3 { top: 50%; left: 30%; width: 15px; height: 15px; color: #FBBF24; animation-duration: 48s; animation-delay: -7s; }
+.s4 { top: 20%; left: 45%; width: 30px; height: 30px; color: #B931FC; animation-duration: 40s; animation-delay: -15s; }
+.s5 { top: 80%; left: 60%; width: 80px; height: 80px; color: #22D3EE; animation-duration: 45s; animation-delay: -2s; }
+.s6 { top: 30%; left: 70%; width: 50px; height: 50px; color: #FBBF24; animation-duration: 35s; animation-delay: -1s; }
+.s7 { top: 60%; left: 85%; width: 25px; height: 25px; color: #B931FC; animation-duration: 50s; animation-delay: -20s; }
+.s8 { top: 5%; left: 90%; width: 35px; height: 35px; color: #22D3EE; animation-duration: 39s; animation-delay: -1s; }

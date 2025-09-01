@@ -3,22 +3,29 @@
 import React, { useEffect, useState } from "react";
 import { initPi, loginWithPi } from "./pi";
 import Home from "./pages/Home";
+import Layout from "./components/Layout";
 
 const BACKEND_URL = "http://localhost:5001";
+
+const AnimatedShapes = () => (
+    <div className="shapes-background">
+      <div className="shape square s1" style={{width: 80, height: 80}}></div>
+      <div className="shape circle s2" style={{width: 20, height: 20}}></div>
+      <div className="shape triangle s3" style={{width: 0, height: 0}}></div>
+      <div className="shape cross s4" style={{width: 60, height: 60}}></div>
+      <div className="shape circle s5" style={{width: 20, height: 20}}></div>
+      <div className="shape square s6" style={{width: 110, height: 110}}></div>
+      <div className="shape triangle s7" style={{width: 0, height: 0, borderLeftWidth: 75, borderRightWidth: 75, borderBottomWidth: 150}}></div>
+      <div className="shape cross s8" style={{width: 25, height: 25}}></div>
+    </div>
+);
 
 export default function App() {
   const [user, setUser] = useState(null);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Check if there's a token in localStorage on initial load
-    const token = localStorage.getItem('id_token');
-    if (token) {
-      // In a full app, you'd verify this token with the backend
-      // and get user data. For now, we'll just re-prompt login.
-      // This part will be upgraded when we add more features.
-    }
-    
     const checkPi = setInterval(() => {
       if (window.Pi) {
         initPi();
@@ -30,15 +37,12 @@ export default function App() {
 
   const handleLogin = async () => {
     setError("");
+    setIsLoading(true);
     try {
       const authResult = await loginWithPi();
-
       const serverResponse = await fetch(`${BACKEND_URL}/api/auth/verify`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        // We only need to send the accessToken now
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ accessToken: authResult.accessToken }),
       });
 
@@ -46,13 +50,9 @@ export default function App() {
         const errorData = await serverResponse.json();
         throw new Error(errorData.message || "Server verification failed.");
       }
-
       const data = await serverResponse.json();
-
       if (data.success) {
-        // 🔹 Store the JWT in localStorage
         localStorage.setItem('id_token', data.token);
-        // Set user state
         setUser(data.user);
       } else {
         throw new Error(data.message || "Backend verification failed.");
@@ -60,25 +60,41 @@ export default function App() {
     } catch (err) {
       console.error("Login process failed:", err);
       setError("Login failed. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
-
+  
   if (!user) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gradient-to-br from-purple-600 to-indigo-700">
-        <div className="p-10 rounded-2xl bg-white text-gray-900 shadow-lg text-center">
-          <h1 className="text-3xl font-bold mb-4">Welcome to WinPi</h1>
+      <div className="relative min-h-screen w-full flex items-center justify-center p-4">
+        <AnimatedShapes />
+        <div className="relative w-full max-w-md p-8 space-y-8 bg-brand-card/80 backdrop-blur-sm border border-white/10 rounded-2xl shadow-2xl text-center">
+          <div>
+            <h1 className="text-4xl font-extrabold text-white">
+              win<span className="text-brand-primary">Pi</span>
+            </h1>
+            <p className="mt-2 text-brand-subtext">Welcome Back, Gamer!</p>
+          </div>
+          <div className="py-4">
+            <p className="text-lg text-brand-text">Ready to dominate the leaderboards?</p>
+          </div>
           <button
             onClick={handleLogin}
-            className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+            disabled={isLoading}
+            className="w-full px-6 py-3 font-semibold text-white bg-gradient-to-r from-brand-primary to-brand-secondary rounded-lg hover:opacity-90 transition-opacity duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Login with Pi
+            {isLoading ? "Connecting..." : "Login with Pi"}
           </button>
-          {error && <p className="text-red-500 mt-4">{error}</p>}
+          {error && <p className="text-red-400 mt-4 text-sm">{error}</p>}
         </div>
       </div>
     );
   }
 
-  return <Home user={user} />;
+  return (
+    <Layout>
+      <Home user={user} />
+    </Layout>
+  );
 }
