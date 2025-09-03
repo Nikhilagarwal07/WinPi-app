@@ -1,45 +1,82 @@
 // File: frontend/src/pages/Home.jsx
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import GlassCard from "../components/GlassCard";
 import StatCard from "../components/StatCard";
 import QuickActionButton from "../components/QuickActionButton";
 
-const Header = ({ username }) => (
-  <header className="p-4 flex items-center justify-between">
-    <div>
-      <h1 className="text-xl font-bold text-white">Welcome Back,</h1>
-      <p className="text-lg text-brand-primary font-semibold -mt-1">
-        {username}!
-      </p>
-    </div>
-    <div className="w-10 h-10 bg-brand-primary rounded-full flex items-center justify-center font-bold text-white text-lg shadow-md">
-      {username.charAt(0).toUpperCase()}
-    </div>
-    <button
-      onClick={handleLogout}
-      className="text-brand-subtext hover:text-white transition-colors"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-        <polyline points="16 17 21 12 16 7" />
-        <line x1="21" y1="12" x2="9" y2="12" />
-      </svg>
-    </button>
-  </header>
-);
+const Header = ({ username, handleLogout }) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-export default function Home({ user }) {
+  // Function to toggle the dropdown's visibility
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  // Effect to close the dropdown if a click occurs outside of it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <header className="p-4 flex items-center justify-between">
+      <div>
+        <h1 className="text-xl font-bold text-white">Welcome Back,</h1>
+        <p className="text-lg text-brand-primary font-semibold -mt-1">
+          {username}!
+        </p>
+      </div>
+
+      <div className="relative" ref={dropdownRef}>
+        <button
+          onClick={toggleDropdown}
+          className="w-10 h-10 bg-brand-primary rounded-full flex items-center justify-center font-bold text-white text-lg shadow-md cursor-pointer hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-brand-dark focus:ring-brand-secondary"
+        >
+          {username.charAt(0).toUpperCase()}
+        </button>
+
+        {/* --- MODIFIED DROPDOWN --- */}
+        {isDropdownOpen && (
+          <div className="absolute right-0 mt-3 w-36 bg-brand-card rounded-lg shadow-xl py-1 z-50 border border-white/10">
+            <button
+              onClick={handleLogout}
+              className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-brand-subtext hover:bg-brand-dark hover:text-brand-text transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+              <span>Logout</span>
+            </button>
+          </div>
+        )}
+      </div>
+    </header>
+  );
+};
+
+export default function Home({ user, handleLogout }) {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -151,21 +188,6 @@ export default function Home({ user }) {
     <>
       <Header username={userData.username} handleLogout={handleLogout} />
       <main className="p-4 space-y-6 pb-24">
-        {/* <section className="flex gap-4">
-          <StatCard
-            label="Total XP"
-            value={userData.xp.toLocaleString()}
-            subValue={`💎 ${userData.gems.toLocaleString()}`}
-            icon={<XpIcon />}
-            gradient="linear-gradient(135deg, rgba(34,197,94,0.35), rgba(16,185,129,0.25), rgba(28, 27, 28, 0.18))"
-          />
-          <StatCard
-            label="Login Streak"
-            value={`${userData.loginStreak} Days`}
-            icon={<StreakIcon />}
-            gradient="linear-gradient(135deg, rgba(240,112,7,0.35), rgba(246,222,40,0.25), rgba(19, 19, 19, 0.18))"
-          />
-        </section> */}
         <section className="flex gap-4">
           <StatCard
             label="Total XP"
@@ -187,21 +209,6 @@ export default function Home({ user }) {
         <section>
           <h2 className="text-lg font-bold text-white mb-4">Quick Actions</h2>
           <div className="flex justify-around">
-            {/* <QuickActionButton
-             label="Play Now"
-             icon={<PlayIcon />}
-             color="bg-gradient-to-br from-pink-500 via-red-600 to-black"
-           />
-           <QuickActionButton
-             label="Quiz"
-             icon="❓"
-             color="bg-gradient-to-br from-yellow-400 via-orange-500 to-black"
-           />
-           <QuickActionButton
-             label="Rewards"
-             icon="🏆"
-             color="bg-gradient-to-br from-purple-500 via-fuchsia-600 to-black"
-           /> */}
             <QuickActionButton
               label="Play Now"
               icon={<PlayIcon />}
