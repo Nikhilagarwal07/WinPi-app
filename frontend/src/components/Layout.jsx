@@ -1,19 +1,8 @@
 // File: frontend/src/components/Layout.jsx
 
 import React from "react";
+import AnimatedShapes from "./AnimatedShapes";
 
-const AnimatedShapes = () => (
-    <div className="shapes-background">
-        <div className="shape square s1" style={{width: 80, height: 80}}></div>
-        <div className="shape circle s2" style={{width: 20, height: 20}}></div>
-        <div className="shape triangle s3" style={{width: 0, height: 0}}></div>
-        <div className="shape cross s4" style={{width: 60, height: 60}}></div>
-        <div className="shape circle s5" style={{width: 20, height: 20}}></div>
-        <div className="shape square s6" style={{width: 110, height: 110}}></div>
-        <div className="shape triangle s7" style={{width: 0, height: 0, borderLeftWidth: 75, borderRightWidth: 75, borderBottomWidth: 150}}></div>
-        <div className="shape cross s8" style={{width: 25, height: 25}}></div>
-    </div>
-);
 
 const BottomNav = () => {
     const HomeIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>;
@@ -36,10 +25,8 @@ const BottomNav = () => {
 // --- The Updated Layout Component ---
 export default function Layout({ children }) {
     return (
-        <div className="relative h-screen w-full overflow-hidden"> {/* Outer container that doesn't scroll */}
+        <div className="relative h-screen w-full overflow-hidden">
             <AnimatedShapes />
-            
-            {/* THIS IS THE NEW SCROLLING CONTAINER */}
             <div className="absolute top-0 left-0 h-full w-full overflow-y-auto pr-[17px] box-content">
                 <div className="min-h-full">
                     <main className="relative z-10">
@@ -47,7 +34,6 @@ export default function Layout({ children }) {
                     </main>
                 </div>
             </div>
-            
             <BottomNav />
         </div>
     );
