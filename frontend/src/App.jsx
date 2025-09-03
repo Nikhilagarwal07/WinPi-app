@@ -1,9 +1,10 @@
 // File: frontend/src/App.jsx
 
 import React, { useEffect, useState } from "react";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { initPi, loginWithPi } from "./pi";
 import Home from "./pages/Home";
-import LoginPage from "./pages/LoginPage"; // Import the LoginPage
+import LoginPage from "./pages/LoginPage";
 import Layout from "./components/Layout";
 
 const BACKEND_URL = "http://localhost:5001";
@@ -12,6 +13,7 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkPi = setInterval(() => {
@@ -40,8 +42,9 @@ export default function App() {
       }
       const data = await serverResponse.json();
       if (data.success) {
-        localStorage.setItem('id_token', data.token);
+        localStorage.setItem("id_token", data.token);
         setUser(data.user);
+        navigate("/home", { replace: true });
       } else {
         throw new Error(data.message || "Backend verification failed.");
       }
@@ -52,17 +55,42 @@ export default function App() {
       setIsLoading(false);
     }
   };
-  
-  // This is the clean, new logic.
-  if (!user) {
-    // If not logged in, render the LoginPage component and pass it the props it needs.
-    return <LoginPage handleLogin={handleLogin} isLoading={isLoading} error={error} />;
-  }
 
-  // If logged in, render the Home component inside our Layout.
+  const handleLogout = () => {
+    localStorage.removeItem("id_token");
+    setUser(null);
+    navigate("/");
+  };
+
   return (
-    <Layout>
-      <Home user={user} />
-    </Layout>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          !user ? (
+            <LoginPage
+              handleLogin={handleLogin}
+              isLoading={isLoading}
+              error={error}
+            />
+          ) : (
+            <Navigate to="/home" replace />
+          )
+        }
+      />
+      <Route
+        path="/home"
+        element={
+          user ? (
+            <Layout>
+              <Home user={user} handleLogout={handleLogout} />
+            </Layout>
+          ) : (
+            <Navigate to="/" />
+          )
+        }
+      />
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
   );
 }
