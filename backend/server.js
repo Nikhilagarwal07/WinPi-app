@@ -10,6 +10,8 @@ dotenv.config();
 
 import authRoutes from "./routes/auth.js";
 import userRoutes from './routes/userRoutes.js';
+import gameRoutes from './routes/gameRoutes.js';
+import leaderboardRoutes from './routes/leaderboardRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -19,6 +21,8 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes); // Corrected from /api/user
+app.use("/api/game", gameRoutes);
+app.use("/api/leaderboard", leaderboardRoutes);
 
 // --- DATABASE CONNECTION ---
 // We will connect to the database here, directly in the main server file.

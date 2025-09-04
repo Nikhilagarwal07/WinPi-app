@@ -5,7 +5,10 @@ import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { initPi, loginWithPi } from "./pi";
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
+import GamePage from "./pages/GamePage"; // The new game lobby
+import ClickerGamePage from "./pages/ClickerGamePage";
 import Layout from "./components/Layout";
+import LeaderboardPage from "./pages/LeaderboardPage";
 
 const BACKEND_URL = "http://localhost:5001";
 
@@ -84,6 +87,42 @@ export default function App() {
           user ? (
             <Layout>
               <Home user={user} handleLogout={handleLogout} />
+            </Layout>
+          ) : (
+            <Navigate to="/" />
+          )
+        }
+      />
+      <Route
+        path="/games"
+        element={
+          user ? (
+            <Layout>
+              <GamePage />
+            </Layout>
+          ) : (
+            <Navigate to="/" />
+          )
+        }
+      />
+      <Route
+        path="/game/clicker"
+        element={
+          user ? (
+            <Layout>
+              <ClickerGamePage />
+            </Layout>
+          ) : (
+            <Navigate to="/" />
+          )
+        }
+      />
+      <Route
+        path="/leaderboard"
+        element={
+          user ? (
+            <Layout>
+              <LeaderboardPage />
             </Layout>
           ) : (
             <Navigate to="/" />

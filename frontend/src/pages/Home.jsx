@@ -1,6 +1,7 @@
 // File: frontend/src/pages/Home.jsx
 
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import GlassCard from "../components/GlassCard";
 import StatCard from "../components/StatCard";
 import QuickActionButton from "../components/QuickActionButton";
@@ -209,12 +210,14 @@ export default function Home({ user, handleLogout }) {
         <section>
           <h2 className="text-lg font-bold text-white mb-4">Quick Actions</h2>
           <div className="flex justify-around">
-            <QuickActionButton
-              label="Play Now"
-              icon={<PlayIcon />}
-              gradient="radial-gradient(circle, rgba(236,72,153,0.18) 0%, rgba(0,0,0,0.12) 100%)"
-              borderColor="rgba(236,72,153,1)" // Neon pink
-            />
+            <Link to="/games">
+              <QuickActionButton
+                label="Play Now"
+                icon={<PlayIcon />}
+                gradient="radial-gradient(circle, rgba(236,72,153,0.18) 0%, rgba(0,0,0,0.12) 100%)"
+                borderColor="rgba(236,72,153,1)" // Neon pink
+              />
+            </Link>
             <QuickActionButton
               label="Quiz"
               icon="❓"
