@@ -5,10 +5,11 @@ import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { initPi, loginWithPi } from "./pi";
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
-import GamePage from "./pages/GamePage"; // The new game lobby
-import ClickerGamePage from "./pages/ClickerGamePage";
-import Layout from "./components/Layout";
+import GameLobbyPage from "./pages/GameLobbyPage";
 import LeaderboardPage from "./pages/LeaderboardPage";
+import ClickerGamePage from "./pages/ClickerGame/ClickerGamePage";
+import QuizPage from "./pages/QuizGame/QuizPage";
+import Layout from "./components/Layout";
 
 const BACKEND_URL = "http://localhost:5001";
 
@@ -98,7 +99,7 @@ export default function App() {
         element={
           user ? (
             <Layout>
-              <GamePage />
+              <GameLobbyPage />
             </Layout>
           ) : (
             <Navigate to="/" />
@@ -111,6 +112,18 @@ export default function App() {
           user ? (
             <Layout>
               <ClickerGamePage />
+            </Layout>
+          ) : (
+            <Navigate to="/" />
+          )
+        }
+      />
+      <Route
+        path="/game/quiz"
+        element={
+          user ? (
+            <Layout>
+              <QuizPage />
             </Layout>
           ) : (
             <Navigate to="/" />

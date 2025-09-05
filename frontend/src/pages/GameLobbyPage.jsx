@@ -21,7 +21,7 @@ const games = [
   {
     id: "quiz",
     title: "Pi Quiz",
-    path: "#",
+    path: "/game/quiz",
     // Your new requested image URL
     imageUrl: quizImage,
     icon: "❓",

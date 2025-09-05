@@ -46,13 +46,13 @@ export default function ClickerGamePage() {
     const token = localStorage.getItem('id_token');
     
     try {
-      const response = await fetch('http://localhost:5001/api/game/submit-score', {
+      const response = await fetch('http://localhost:5001/api/games/clicker/submit-score', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ score, gameId: 'pi-clicker' }),
+        body: JSON.stringify({ score }),
       });
 
       if (!response.ok) {
