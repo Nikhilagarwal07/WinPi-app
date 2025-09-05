@@ -3,7 +3,7 @@
 import React from "react";
 import AnimatedShapes from "../components/AnimatedShapes";
 
-export default function LoginPage({ handleLogin, isLoading, error }) {
+export default function LoginPage({ handleLogin, isLoading, error, sdkReady }) {
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center p-4">
       <AnimatedShapes />
@@ -22,10 +22,10 @@ export default function LoginPage({ handleLogin, isLoading, error }) {
 
             <button
               onClick={handleLogin}
-              disabled={isLoading}
-              className="w-full px-6 py-3 font-semibold text-white bg-gradient-to-r from-brand-primary to-brand-secondary rounded-lg hover:opacity-90 transition-opacity duration-300 disabled:opacity-50"
+              disabled={isLoading || !sdkReady} // Button is disabled while loading OR if SDK is not ready
+              className="w-full px-6 py-3 font-semibold text-white bg-gradient-to-r from-brand-primary to-brand-secondary rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? "Connecting..." : "Login with Pi"}
+              {isLoading ? "Connecting..." : (sdkReady ? "Login with Pi" : "Initializing...")}
             </button>
 
             {error && <p className="text-red-400 mt-4 text-sm">{error}</p>}

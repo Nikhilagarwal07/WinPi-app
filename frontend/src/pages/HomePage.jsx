@@ -1,7 +1,8 @@
-// File: frontend/src/pages/Home.jsx
+// File: frontend/src/pages/HomePage.jsx
 
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 import GlassCard from "../components/GlassCard";
 import StatCard from "../components/StatCard";
 import QuickActionButton from "../components/QuickActionButton";
@@ -10,12 +11,10 @@ const Header = ({ username, handleLogout }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Function to toggle the dropdown's visibility
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  // Effect to close the dropdown if a click occurs outside of it
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -46,7 +45,6 @@ const Header = ({ username, handleLogout }) => {
           {username.charAt(0).toUpperCase()}
         </button>
 
-        {/* --- MODIFIED DROPDOWN --- */}
         {isDropdownOpen && (
           <div className="absolute right-0 mt-3 w-36 bg-brand-card rounded-lg shadow-xl py-1 z-50 border border-white/10">
             <button
@@ -77,53 +75,8 @@ const Header = ({ username, handleLogout }) => {
   );
 };
 
-export default function Home({ user, handleLogout }) {
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem("id_token");
-      if (!token) {
-        setLoading(false);
-        setUserData({
-          username: user.username,
-          xp: 0,
-          gems: 100,
-          loginStreak: 1,
-        });
-        return;
-      }
-
-      try {
-        const response = await fetch("http://localhost:5001/api/users/me", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch user data");
-        }
-
-        const data = await response.json();
-        setUserData(data);
-      } catch (err) {
-        console.error(err);
-        setUserData({
-          username: user.username,
-          xp: 0,
-          gems: 100,
-          loginStreak: 1,
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, [user.username]);
+export default function HomePage({ handleLogout }) {
+  const { userData, loading } = useUser();
 
   const XpIcon = () => (
     <svg
@@ -196,14 +149,14 @@ export default function Home({ user, handleLogout }) {
             subValue={`💎 ${userData.gems.toLocaleString()}`}
             icon={<XpIcon />}
             gradient="radial-gradient(circle, rgba(34,197,94,0.15) 0%, rgba(0,0,0,0.05) 100%)"
-            borderColor="rgba(34,197,94,0.5)" // Neon green
+            borderColor="rgba(34,197,94,0.5)"
           />
           <StatCard
             label="Login Streak"
             value={`${userData.loginStreak} Days`}
             icon={<StreakIcon />}
             gradient="radial-gradient(circle, rgba(240,112,7,0.15) 0%, rgba(0,0,0,0.05) 100%)"
-            borderColor="rgba(240,112,7,0.5)" // Neon orange
+            borderColor="rgba(240,112,7,0.5)"
           />
         </section>
 
@@ -215,20 +168,20 @@ export default function Home({ user, handleLogout }) {
                 label="Play Now"
                 icon={<PlayIcon />}
                 gradient="radial-gradient(circle, rgba(236,72,153,0.18) 0%, rgba(0,0,0,0.12) 100%)"
-                borderColor="rgba(236,72,153,1)" // Neon pink
+                borderColor="rgba(236,72,153,1)"
               />
             </Link>
             <QuickActionButton
               label="Quiz"
               icon="❓"
               gradient="radial-gradient(circle, rgba(168,85,247,0.18) 0%, rgba(0,0,0,0.12) 100%)"
-              borderColor="rgba(168,85,247,1)" // Neon purple
+              borderColor="rgba(168,85,247,1)"
             />
             <QuickActionButton
               label="Rewards"
               icon="🏆"
               gradient="radial-gradient(circle, rgba(251,191,36,0.18) 0%, rgba(0,0,0,0.12) 100%)"
-              borderColor="rgba(251,191,36,1)" // Neon yellow
+              borderColor="rgba(251,191,36,1)"
             />
           </div>
         </section>
@@ -238,22 +191,6 @@ export default function Home({ user, handleLogout }) {
           borderColor="rgba(6,182,212,1)"
         >
           <p className="text-white/80">Featured Games will go here!</p>
-        </GlassCard>
-
-        <GlassCard
-          gradient="radial-gradient(circle, rgba(236,72,153,0.18) 0%, rgba(30,27,28,0.12) 100%)"
-          borderColor="rgba(236,72,153,1)"
-          height="12rem"
-        >
-          <p className="text-white/80">Weekly Leaderboard will go here!</p>
-        </GlassCard>
-
-        <GlassCard
-          gradient="radial-gradient(circle, rgba(20,184,166,0.18) 0%, rgba(30,27,28,0.12) 100%)"
-          borderColor="rgba(20,184,166,1)"
-          height="12rem"
-        >
-          <p className="text-white/80">Daily Challenges will go here!</p>
         </GlassCard>
       </main>
     </>
