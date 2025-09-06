@@ -26,7 +26,7 @@ router.post('/submit-score', authMiddleware, async (req, res) => {
     await user.save();
 
     // 2. Log the XP earned for the weekly leaderboard
-    await GameScore.create({ user: user._id, game: gameId, score: xpEarned });
+    await GameScore.create({ user: user._id, gameId: gameId, xp: xpEarned });
 
     // 3. Update the high score with the gameScore
     await UserGameData.findOneAndUpdate(

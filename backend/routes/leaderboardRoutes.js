@@ -39,11 +39,11 @@ router.get("/:filter", async (req, res) => {
         {
           $group: {
             _id: "$user",
-            weeklyScore: { $sum: "$score" },
+            weeklyXp: { $sum: "$xp" },
           },
         },
         {
-          $sort: { weeklyScore: -1 },
+          $sort: { weeklyXp: -1 },
         },
         {
           $limit: 100,
@@ -63,7 +63,7 @@ router.get("/:filter", async (req, res) => {
           $project: {
             _id: 0,
             username: "$userData.username",
-            xp: "$weeklyScore",
+            xp: "$weeklyXp",
           },
         },
       ]);

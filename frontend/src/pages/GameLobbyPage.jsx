@@ -1,9 +1,10 @@
-// File: frontend/src/pages/GamePage.jsx
+// File: frontend/src/pages/GameLobbyPage.jsx
 
 import React from "react";
 import GameCard from "../components/GameCard";
 import PageHeader from "../components/PageHeader";
 import quizImage from "../assets/quiz.png";
+import clickimage from "../assets/fallback-game-image.jpg";
 
 // Enhanced placeholder data for our games
 const games = [
@@ -12,8 +13,7 @@ const games = [
     title: "Pi Clicker",
     path: "/game/clicker",
     // A working 16:9 image URL
-    imageUrl:
-      "https://images.unsplash.com/photo-1554235286-d5c4f6b47c87?q=80&w=1280&h=720&auto=format&fit=crop",
+    imageUrl: clickimage,
     icon: "👆",
     tags: ["Speed", "Reflex"],
     reward: "Up to 300 XP",
