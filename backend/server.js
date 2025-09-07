@@ -12,6 +12,7 @@ dotenv.config();
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/userRoutes.js";
 import leaderboardRoutes from "./routes/leaderboardRoutes.js";
+import storeRoutes from './routes/storeRoutes.js'; // Import the new store routes
 
 // Game-specific routes from their new locations
 import clickerRoutes from "./routes/games/ClickerGame/index.js";
@@ -31,6 +32,9 @@ app.use("/api/leaderboard", leaderboardRoutes);
 // Game API routes
 app.use("/api/games/clicker", clickerRoutes);
 app.use("/api/games/quiz", quizRoutes);
+
+// Store API route
+app.use("/api/store", storeRoutes); 
 
 // --- DATABASE CONNECTION ---
 mongoose

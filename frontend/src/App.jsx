@@ -4,13 +4,17 @@ import React, { useEffect, useState } from "react";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { initPi, loginWithPi } from "./pi";
 import { UserProvider } from "./context/UserContext";
+import { ModalProvider } from "./context/ModelContext"; // 1. Import ModalProvider
+import Modal from "./components/Modal"; // 2. Import the Modal component
 
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
-import GameLobbyPage from './pages/GameLobbyPage';
-import LeaderboardPage from './pages/LeaderboardPage';
-import ClickerGamePage from './pages/ClickerGame/ClickerGamePage';
-import QuizPage from './pages/QuizGame/QuizPage';
+import GameLobbyPage from "./pages/GameLobbyPage";
+import LeaderboardPage from "./pages/LeaderboardPage";
+import ClickerGamePage from "./pages/ClickerGame/ClickerGamePage";
+import QuizPage from "./pages/QuizGame/QuizPage";
+import StorePage from "./pages/StorePage";
+import ProfilePage from "./pages/ProfilePage";
 
 import Layout from "./components/Layout";
 
@@ -24,7 +28,7 @@ export default function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src = "https://sdk.minepi.com/pi-sdk.js";
     script.async = true;
     script.onload = () => {
@@ -36,7 +40,7 @@ export default function App() {
       document.body.removeChild(script);
     };
   }, []);
-  
+
   const handleLogin = async () => {
     if (!sdkReady) {
       setError("Pi SDK is not ready yet. Please wait a moment.");
@@ -79,53 +83,113 @@ export default function App() {
   };
 
   return (
-    <UserProvider user={user}>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            !user ? (
-              <LoginPage
-                handleLogin={handleLogin}
-                isLoading={isLoading}
-                error={error}
-                sdkReady={sdkReady} // Pass the sdkReady state down
-              />
-            ) : (
-              <Navigate to="/home" replace />
-            )
-          }
-        />
-        <Route
-          path="/home"
-          element={
-            user ? (
-              <Layout>
-                <HomePage handleLogout={handleLogout} />
-              </Layout>
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        <Route
-          path="/games"
-          element={user ? <Layout><GameLobbyPage /></Layout> : <Navigate to="/" />}
-        />
-        <Route
-          path="/game/clicker"
-          element={user ? <Layout><ClickerGamePage /></Layout> : <Navigate to="/" />}
-        />
-        <Route
-          path="/game/quiz"
-          element={user ? <Layout><QuizPage /></Layout> : <Navigate to="/" />}
-        />
-        <Route
-          path="/leaderboard"
-          element={user ? <Layout><LeaderboardPage /></Layout> : <Navigate to="/" />}
-        />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </UserProvider>
+    <ModalProvider>
+      <UserProvider user={user}>
+        <Modal />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              !user ? (
+                <LoginPage
+                  handleLogin={handleLogin}
+                  isLoading={isLoading}
+                  error={error}
+                  sdkReady={sdkReady} // Pass the sdkReady state down
+                />
+              ) : (
+                <Navigate to="/home" replace />
+              )
+            }
+          />
+          <Route
+            path="/home"
+            element={
+              user ? (
+                <Layout>
+                  <HomePage handleLogout={handleLogout} />
+                </Layout>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/games"
+            element={
+              user ? (
+                <Layout>
+                  <GameLobbyPage />
+                </Layout>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/game/clicker"
+            element={
+              user ? (
+                <Layout>
+                  <ClickerGamePage />
+                </Layout>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/game/quiz"
+            element={
+              user ? (
+                <Layout>
+                  <QuizPage />
+                </Layout>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/leaderboard"
+            element={
+              user ? (
+                <Layout>
+                  <LeaderboardPage />
+                </Layout>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route path="*" element={<Navigate to="/" />} />
+          <Route
+            path="/store"
+            element={
+              user ? (
+                <Layout>
+                  <StorePage />
+                </Layout>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              user ? (
+                <Layout>
+                  <ProfilePage />
+                </Layout>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </UserProvider>
+    </ModalProvider>
   );
 }
