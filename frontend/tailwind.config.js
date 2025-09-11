@@ -22,6 +22,14 @@ module.exports = {
         "glow-cyan-to": "#0E7490",
         "glow-green-from": "#34D399",
         "glow-green-to": "#10B981",
+
+        //avatar colours
+        "avatar-blue": "#1E3A8A",   // Deep Royal Blue
+        "avatar-green": "#166534",  // Emerald Green
+        "avatar-red": "#991B1B",    // Crimson Red
+        "avatar-black": "#111827",  // Charcoal Black
+        "avatar-gradient-start": "#181819ff", // For gradient
+        "avatar-gradient-end": "#b005bcff",   // Royal Purple
       },
       fontFamily: {
         sans: ["Poppins", "sans-serif"],

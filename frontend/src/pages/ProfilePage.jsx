@@ -4,6 +4,9 @@ import React, { useState, useEffect } from "react";
 import PageHeader from "../components/PageHeader";
 import { useUser } from "../context/UserContext";
 import { getBorderStyle } from "../utils/borderStyles";
+import { getFrameImage } from "../utils/borderStyles";
+import Avatar from "../components/Avatar";
+import { getFrame } from "../utils/borderStyles";
 
 export default function ProfilePage() {
   const { userData, inventory, refetchUserData, loading } = useUser();
@@ -58,19 +61,21 @@ export default function ProfilePage() {
     .filter(Boolean);
 
   const equippedBorderStyle = getBorderStyle(userData.equippedBorder);
+  const equippedBorderImage = getFrameImage(userData.equippedBorder);
+  const equippedFrame = getFrame(userData.equippedBorder);
 
   return (
     <div className="p-4 pb-24">
       <PageHeader title={userData.username} subtitle="Your Player Profile" />
 
       {/* Avatar */}
-      <div className="flex justify-center mb-8">
-        <div
-          className={`w-32 h-32 rounded-full flex items-center justify-center transition-all duration-300 ${equippedBorderStyle}`}
-        >
-          <div className="w-full h-full rounded-full bg-brand-primary flex items-center justify-center text-white text-5xl font-bold">
-            {userData.username.charAt(0).toUpperCase()}
-          </div>
+      <div className="relative w-32 h-32 mx-auto mb-8">
+        <div className="flex justify-center mb-8">
+          <Avatar
+            username={userData.username}
+            frame={equippedFrame}
+            size="lg"
+          />
         </div>
       </div>
 
@@ -97,7 +102,7 @@ export default function ProfilePage() {
         </h3>
         <div className="grid grid-cols-3 gap-4">
           {/* Default Border */}
-          <div className="text-center">
+          {/* <div className="text-center">
             <div className="w-20 h-20 rounded-full mx-auto mb-2 flex items-center justify-center bg-brand-dark p-1">
               <img
                 src="https://placehold.co/128x128/4B5563/FFFFFF?text=Default"
@@ -114,10 +119,26 @@ export default function ProfilePage() {
                 ? "Equipped"
                 : "Equip"}
             </button>
+          </div> */}
+          <div className="text-center">
+            <img
+              src={getFrameImage("border_default")}
+              alt="Default Frame"
+              className="w-20 h-20 mx-auto mb-2"
+            />
+            <button
+              onClick={() => handleEquipItem("border_default", "border")}
+              disabled={userData.equippedBorder === "border_default"}
+              className="text-xs bg-brand-card px-3 py-1 rounded-md disabled:opacity-50"
+            >
+              {userData.equippedBorder === "border_default"
+                ? "Equipped"
+                : "Equip"}
+            </button>
           </div>
 
           {/* Owned Borders */}
-          {ownedBorders.map((item) => (
+          {/* {ownedBorders.map((item) => (
             <div key={item.itemId} className="text-center">
               <div
                 className={`w-20 h-20 rounded-full mx-auto mb-2 flex items-center justify-center ${getBorderStyle(
@@ -134,6 +155,22 @@ export default function ProfilePage() {
                 onClick={() => handleEquipItem(item.itemId, item.type)}
                 disabled={userData.equippedBorder === item.itemId}
                 className="text-xs bg-brand-card px-3 py-1 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {userData.equippedBorder === item.itemId ? "Equipped" : "Equip"}
+              </button>
+            </div>
+          ))} */}
+          {ownedBorders.map((item) => (
+            <div key={item.itemId} className="text-center">
+              <img
+                src={getFrameImage(item.itemId)}
+                alt={item.name}
+                className="w-20 h-20 mx-auto mb-2"
+              />
+              <button
+                onClick={() => handleEquipItem(item.itemId, item.type)}
+                disabled={userData.equippedBorder === item.itemId}
+                className="text-xs bg-brand-card px-3 py-1 rounded-md disabled:opacity-50"
               >
                 {userData.equippedBorder === item.itemId ? "Equipped" : "Equip"}
               </button>

@@ -2,7 +2,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { useModal } from "../context/ModelContext";
+import { useModal } from "../context/ModalContext";
 
 export default function Modal() {
   const { isOpen, modalContent } = useModal();

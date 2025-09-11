@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { initPi, loginWithPi } from "./pi";
 import { UserProvider } from "./context/UserContext";
-import { ModalProvider } from "./context/ModelContext"; // 1. Import ModalProvider
+import { ModalProvider } from "./context/ModalContext"; // 1. Import ModalProvider
 import Modal from "./components/Modal"; // 2. Import the Modal component
 
 import HomePage from "./pages/HomePage";

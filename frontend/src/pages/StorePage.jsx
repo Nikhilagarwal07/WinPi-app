@@ -1,15 +1,16 @@
-// File: frontend/src/pages/StorePage.jsx
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 import { useUser } from "../context/UserContext";
-import { useModal } from "../context/ModelContext";
+import { useModal } from "../context/ModalContext";
+import { getFrameImage } from "../utils/borderStyles";
 
 const RewardCard = ({ item }) => {
   const { userData, inventory, refetchUserData } = useUser();
   const { showModal, hideModal } = useModal();
   const [isBuying, setIsBuying] = useState(false);
+  // State to handle equipping feedback
+  const [isEquipping, setIsEquipping] = useState(false);
 
   const alreadyOwned = inventory.some((inv) => inv.itemId === item.itemId);
   const isEquipped = userData.equippedBorder === item.itemId;
@@ -94,28 +95,52 @@ const RewardCard = ({ item }) => {
     }
   };
 
+  // New function to handle equipping an item directly from the store
+  const handleEquipItem = async () => {
+    if (isEquipped || isEquipping) return;
+    setIsEquipping(true);
+    const token = localStorage.getItem("id_token");
+    try {
+      await fetch("http://localhost:5001/api/users/me/equip-item", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ itemId: item.itemId, itemType: item.type }),
+      });
+      await refetchUserData(); // This updates the UI to show "Equipped"
+    } catch (error) {
+      console.error("Error equipping item:", error);
+    } finally {
+      setIsEquipping(false);
+    }
+  };
+
   return (
     <div className="bg-brand-card border border-white/10 rounded-lg p-4 flex flex-col items-center text-center transition-all">
       <div className="w-24 h-24 rounded-full flex items-center justify-center bg-brand-dark mb-4">
-        {/* Visual Preview using the Image URL */}
         <img
-          src={item.imageUrl}
+          src={getFrameImage(item.itemId)}
           alt={item.name}
-          className="w-20 h-20 rounded-full object-cover"
+          className="w-full h-full object-cover"
         />
       </div>
       <h3 className="font-bold text-white flex-grow">{item.name}</h3>
       <p className="text-sm text-brand-subtext h-10 mb-2">{item.description}</p>
 
       {alreadyOwned ? (
-        <Link
-          to="/profile"
-          className={`mt-4 w-full text-white font-semibold py-2 rounded-lg transition-opacity hover:opacity-90 ${
-            isEquipped ? "bg-gray-600 cursor-default" : "bg-green-600"
-          }`}
+        <button
+          onClick={handleEquipItem}
+          disabled={isEquipped || isEquipping}
+          className={`mt-4 w-full text-white font-semibold py-2 rounded-lg transition-all ${
+            isEquipped
+              ? "bg-gray-600 cursor-default"
+              : "bg-green-600 hover:bg-green-700"
+          } ${isEquipping ? "opacity-50 cursor-not-allowed" : ""}`}
         >
-          {isEquipped ? "Equipped" : "Equip"}
-        </Link>
+          {isEquipping ? "Equipping..." : isEquipped ? "Equipped" : "Equip"}
+        </button>
       ) : (
         <button
           onClick={handlePurchase}
