@@ -1,6 +1,6 @@
 // File: backend/models/User.js
 
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   piUid: { type: String, required: true, unique: true },
@@ -10,8 +10,9 @@ const userSchema = new mongoose.Schema({
   loginStreak: { type: Number, default: 1, required: true },
   lastLogin: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now },
+  equippedBorder: { type: String, default: "border_default" },
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 export default User;

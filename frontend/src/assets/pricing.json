@@ -1,0 +1,48 @@
+{
+  "entryBasedGames": {
+    "enabled": true,
+    "entryFee": 0.1,
+    "developerCut": 0.2,
+    "prizeDistribution": {
+      "1st": 0.6,
+      "2nd": 0.3,
+      "3rd": 0.1
+    },
+    "exampleMatch": {
+      "players": 10,
+      "totalCollected": 1.0,
+      "prizePool": 0.8,
+      "developerEarnings": 0.2
+    }
+  },
+  "unlockBasedGames": {
+    "enabled": true,
+    "freeLevels": 10,
+    "unlockAllLevels": 1.0,
+    "skins": {
+      "basic": 0.1,
+      "premium": 0.2
+    },
+    "powerUps": {
+      "extraLife": 0.05,
+      "hint": 0.05
+    }
+  },
+  "vipSubscription": {
+    "enabled": true,
+    "monthlyFee": 1.0,
+    "benefits": [
+      "Unlimited premium plays",
+      "Exclusive skins",
+      "XP boost",
+      "Leaderboard multipliers"
+    ]
+  },
+  "projectionExample": {
+    "users": 1000,
+    "entryBasedEarnings": 120,
+    "unlockBasedEarnings": 200,
+    "vipEarnings": 100,
+    "totalMonthlyEarnings": 420
+  }
+}

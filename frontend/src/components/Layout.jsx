@@ -1,40 +1,132 @@
 // File: frontend/src/components/Layout.jsx
 
 import React from "react";
+import { NavLink } from "react-router-dom"; // Import NavLink
+
 import AnimatedShapes from "./AnimatedShapes";
 
-
 const BottomNav = () => {
-    const HomeIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>;
-    const GamesIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.25 2.75 4.75 6.25v7.5L10.25 17.25"/><path d="m13.75 2.75 5.5 3.5v7.5l-5.5 3.5"/><path d="M12 22.25v-5l-5.5-3.5-5.5 3.5v-7.5l5.5-3.5 5.5 3.5 5.5-3.5v7.5l-5.5 3.5Z"/></svg>;
-    const LeaderboardIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect width="8" height="4" x="8" y="2" rx="1"/></svg>;
-    const ProfileIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>;
-  
-    return (
-      <nav className="fixed bottom-0 left-0 right-0 bg-brand-card/80 backdrop-blur-sm border-t border-white/10 px-6 py-3 z-50">
-        <div className="flex justify-around items-center">
-          <button className="flex flex-col items-center space-y-1 text-brand-primary"><HomeIcon /><span className="text-xs">Home</span></button>
-          <button className="flex flex-col items-center space-y-1 text-brand-subtext"><GamesIcon /><span className="text-xs">Games</span></button>
-          <button className="flex flex-col items-center space-y-1 text-brand-subtext"><LeaderboardIcon /><span className="text-xs">Leaderboard</span></button>
-          <button className="flex flex-col items-center space-y-1 text-brand-subtext"><ProfileIcon /><span className="text-xs">Profile</span></button>
-        </div>
-      </nav>
-    );
+  const HomeIcon = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+      <polyline points="9 22 9 12 15 12 15 22" />
+    </svg>
+  );
+  const GamesIcon = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M10.25 2.75 4.75 6.25v7.5L10.25 17.25" />
+      <path d="m13.75 2.75 5.5 3.5v7.5l-5.5 3.5" />
+      <path d="M12 22.25v-5l-5.5-3.5-5.5 3.5v-7.5l5.5-3.5 5.5 3.5 5.5-3.5v7.5l-5.5 3.5Z" />
+    </svg>
+  );
+  const LeaderboardIcon = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+      <rect width="8" height="4" x="8" y="2" rx="1" />
+    </svg>
+  );
+  const ProfileIcon = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="8" r="5" />
+      <path d="M20 21a8 8 0 0 0-16 0" />
+    </svg>
+  );
+  const StoreIcon = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m12 14 4-4" />
+      <path d="M16 14H8" />
+      <path d="M18 20V8.3a1 1 0 0 0-.4-.8l-4-3.2a1 1 0 0 0-1.2 0l-4 3.2a1 1 0 0 0-.4.8V20a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2Z" />
+    </svg>
+  );
+  const navLinkClasses = ({ isActive }) =>
+    `flex flex-col items-center space-y-1 ${
+      isActive ? "text-brand-primary" : "text-brand-subtext"
+    }`;
+
+  return (
+    <nav className="fixed bottom-0 left-0 right-0 bg-brand-card/80 backdrop-blur-sm border-t border-white/10 px-6 py-3 z-50">
+      <div className="flex justify-around items-center">
+        <NavLink to="/home" className={navLinkClasses}>
+          <HomeIcon />
+          <span className="text-xs">Home</span>
+        </NavLink>
+        <NavLink to="/games" className={navLinkClasses}>
+          <GamesIcon />
+          <span className="text-xs">Games</span>
+        </NavLink>
+        <NavLink to="/leaderboard" className={navLinkClasses}>
+          <LeaderboardIcon />
+          <span className="text-xs">Leaderboard</span>
+        </NavLink>
+        <NavLink to="/store" className={navLinkClasses}>
+          <StoreIcon />
+          <span className="text-xs">Store</span>
+        </NavLink>
+      </div>
+    </nav>
+  );
 };
 
-// --- The Updated Layout Component ---
 export default function Layout({ children }) {
-    return (
-        <div className="relative h-screen w-full overflow-hidden">
-            <AnimatedShapes />
-            <div className="absolute top-0 left-0 h-full w-full overflow-y-auto pr-[17px] box-content">
-                <div className="min-h-full">
-                    <main className="relative z-10">
-                        {children}
-                    </main>
-                </div>
-            </div>
-            <BottomNav />
+  return (
+    <div className="relative h-screen w-full overflow-hidden">
+      <AnimatedShapes />
+      <div className="absolute top-0 left-0 h-full w-full overflow-y-auto pr-[17px] box-content">
+        <div className="min-h-full">
+          <main className="relative z-10">{children}</main>
         </div>
-    );
+      </div>
+      <BottomNav />
+    </div>
+  );
 }

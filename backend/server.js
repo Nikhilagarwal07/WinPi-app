@@ -3,13 +3,20 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 // Load environment variables right at the start.
 dotenv.config();
 
+// Standard routes
 import authRoutes from "./routes/auth.js";
-import userRoutes from './routes/userRoutes.js';
+import userRoutes from "./routes/userRoutes.js";
+import leaderboardRoutes from "./routes/leaderboardRoutes.js";
+import storeRoutes from './routes/storeRoutes.js'; // Import the new store routes
+
+// Game-specific routes from their new locations
+import clickerRoutes from "./routes/games/ClickerGame/index.js";
+import quizRoutes from "./routes/games/QuizGame/index.js";
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -17,14 +24,23 @@ const PORT = process.env.PORT || 5001;
 app.use(cors());
 app.use(express.json());
 
+// Standard API routes
 app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes); // Corrected from /api/user
+app.use("/api/users", userRoutes);
+app.use("/api/leaderboard", leaderboardRoutes);
+
+// Game API routes
+app.use("/api/games/clicker", clickerRoutes);
+app.use("/api/games/quiz", quizRoutes);
+
+// Store API route
+app.use("/api/store", storeRoutes); 
 
 // --- DATABASE CONNECTION ---
-// We will connect to the database here, directly in the main server file.
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/winpi-db')
+mongoose
+  .connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/winpi-db")
   .then(() => {
-    console.log('✅ Database connected successfully.');
+    console.log("✅ Database connected successfully.");
     // Only start the server if the database connection is successful
     app.listen(PORT, () => {
       console.log(`✅ Backend running on port ${PORT}`);

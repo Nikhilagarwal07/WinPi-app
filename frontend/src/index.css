@@ -30,7 +30,7 @@ body {
 
 @keyframes float {
   0% { transform: translateY(50vh) rotate(0deg); opacity: 0; }
-  10%, 90% { opacity: 0.2; } /* Reduced opacity */
+  10%, 90% { opacity: 0.3; } /* Reduced opacity */
   100% { transform: translateY(-50vh) rotate(360deg); opacity: 0; }
 }
 
